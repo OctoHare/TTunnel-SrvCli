@@ -200,14 +200,10 @@ hostname = "tt_server_url"
 addresses = ["tt_server_url:8443"]
 username = "connect_login_on_server"
 password = "connect_password_on_server"
+upstream_protocol = "http2"
 skip_verification = false
 has_ipv6 = false
 
-# Отключаем TUN (VPN маршрутизацию)
-[listener.tun]
-included_routes = []
-
-# Включаем SOCKS5 прокси для сети
 [listener.socks]
 address = "127.0.0.1:1080"
 EOF
