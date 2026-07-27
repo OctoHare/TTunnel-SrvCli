@@ -5,7 +5,7 @@
 ---
 
 Создаём каталог для настроек:
-```bach
+```bash
 mkdir -p /opt/trusttunnel/server-config
 ```
 
@@ -158,7 +158,7 @@ services:
       - TT_MODE=server
 
     volumes:
-      - /opt/trusttunnel/server-config:/trusttunnel_endpoint:rw
+      - /opt/trusttunnel/server-config:/trusttunnel:rw
       - /etc/caddy/data:/etc/caddy/data:ro
 
     healthcheck:
@@ -177,7 +177,7 @@ services:
 
 Создаём каталог для настроек:
 
-```bach
+```bash
 mkdir -p /opt/trusttunnel-client
 ```
 
@@ -230,7 +230,7 @@ services:
       - TT_MODE=client
 
     volumes:
-      - /opt/trusttunnel-client:/trusttunnel_client:rw
+      - /opt/trusttunnel-client:/trusttunnel:rw
 ```
 
 ---
@@ -285,5 +285,5 @@ services:
       - /dev/net/tun:/dev/net/tun
 
     volumes:
-      - /opt/trusttunnel-client:/trusttunnel_client:rw
+      - /opt/trusttunnel-client:/trusttunnel:rw
 ```
