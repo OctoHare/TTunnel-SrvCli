@@ -76,7 +76,8 @@ direct = {}
 [forward_protocol.socks5]
 address = "127.0.0.1:1080"
 ```
-Порт, с которого будете забираться трафик выберите сами.
+
+> Порт, с которого будете забираться трафик выберите сами из свободных
 
 ---
 
@@ -169,6 +170,8 @@ services:
       start_period: 15s
 ```
 
+> В секции `healthcheck` в пункте `test` укажите тот порт, который вы выбрали для работы сервера
+
 ---
 
 ## Клиент TrustTunnel
@@ -209,6 +212,8 @@ address = "0.0.0.0:1080"
 EOF
 ```
 
+> Порт, на который будете отправлять трафик выберите сами из свободных
+
 ---
 
 Далее для установки клиента TrustTunnel переходим в Portainer:
@@ -231,7 +236,16 @@ services:
 
     volumes:
       - /opt/trusttunnel-client:/trusttunnel:rw
+
+    healthcheck:
+      test: ["CMD-SHELL", "ss -ltn | grep -q ':1080 '"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 ```
+
+> В секции `healthcheck` в пункте `test` укажите тот порт, который вы выбрали для работы клиента
 
 ---
 
@@ -286,4 +300,11 @@ services:
 
     volumes:
       - /opt/trusttunnel-client:/trusttunnel:rw
+
+    healthcheck:
+      test: ["CMD-SHELL", "ip link | grep -q 'tun'"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 ```
