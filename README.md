@@ -1,4 +1,6 @@
-# TTunnel-SrvCli
+# TrustTunnel сервер и клиент в контейнере
+
+[English version](README_EN.md)
 
 ## Сервер TrustTunnel с сертификатами от Caddy
 
