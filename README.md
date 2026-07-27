@@ -197,10 +197,11 @@ vpn_mode = "general"
 
 [endpoint]
 hostname = "tt_server_url"
-addresses = ["192.168.1.100:8443"]
+addresses = ["tt_server_url:8443"]
 username = "connect_login_on_server"
 password = "connect_password_on_server"
-skip_verification = true
+skip_verification = false
+has_ipv6 = false
 
 # Отключаем TUN (VPN маршрутизацию)
 [listener.tun]
@@ -260,15 +261,17 @@ vpn_mode = "general"
 
 [endpoint]
 hostname = "tt_server_url"
-addresses = ["192.168.1.100:8443"]
+addresses = ["tt_server_url:8443"]
 username = "connect_login_on_server"
 password = "connect_password_on_server"
-skip_verification = true
+skip_verification = false
+has_ipv6 = false
 
 [listener.tun]
 included_routes = ["0.0.0.0/0", "2000::/3"]
 excluded_routes = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
 mtu_size = 1350
+change_system_dns = false
 EOF
 ```
 
