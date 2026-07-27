@@ -1,6 +1,6 @@
 # TTunnel-SrvCli
 
-## Сервер с сертификатами от Caddy
+## Сервер TrustTunnel с сертификатами от Caddy
 
 ---
 
@@ -84,12 +84,6 @@ address = "127.0.0.1:1080"
 
 Замените `tt_server_url` на ваш домен/субдомен сервера
 
-Stack Caddy в Portainer должен отдавать каталог с сертификатами:
-```yml
-    volumes:
-      - /etc/caddy/Caddyfile:/etc/caddy/Caddyfile
-```
-
 ```bash
 cat << 'EOF' > /opt/trusttunnel/server-config/hosts.toml
 [[main_hosts]]
@@ -99,9 +93,15 @@ private_key_path = "/etc/caddy/data/caddy/certificates/acme-v02.api.letsencrypt.
 EOF
 ```
 
+Для корректного доступа к сертификатам Stack Caddy в Portainer должен отдавать каталог с сертификатами:
+```yml
+    volumes:
+      - /etc/caddy/data:/data
+```
+
 ---
 
-Создаём файл `credentials.toml`, который содержит имя домена и путь к сертификатам:
+Создаём файл `credentials.toml`, который содержит учётные записи для подключения к серверу:
 
 ```bash
 cat << 'EOF' > /opt/trusttunnel/server-config/credentials.toml
@@ -139,7 +139,7 @@ touch /opt/trusttunnel/server-config/rules.toml
 
 ---
 
-Далее для установки сервер TrustTunnel переходим в Portainer:
+Далее для установки сервера TrustTunnel переходим в Portainer:
 
 1. Раздел "**Stacks**"
 2. Кнопка "**+ Add stack**"
@@ -171,11 +171,24 @@ services:
 
 ---
 
-## Клиент в режиме SOCKS5-прокси
+## Клиент TrustTunnel
 
-`/opt/trusttunnel-client/client.toml`
+---
 
-```toml
+Создаём каталог для настроек:
+
+```bach
+mkdir -p /opt/trusttunnel-client
+```
+
+---
+
+### Клиент в режиме SOCKS5-прокси
+
+Создаём файл `client.toml`, который содержит настройки для подключения к серверу:
+
+```bash
+cat << 'EOF' > /opt/trusttunnel-client/client.toml
 loglevel = "info"
 vpn_mode = "general"
 
@@ -193,30 +206,41 @@ included_routes = []
 # Включаем SOCKS5 прокси для сети
 [listener.socks]
 address = "0.0.0.0:1080"
-```
-
-Portainer Stack:
-
-```yml
-trusttunnel-client-socks:
-    image: ghcr.io/octohare/trusttunnel:latest
-    container_name: trusttunnel-client
-    restart: unless-stopped
-    environment:
-      - TT_MODE=client
-    ports:
-      - "1080:1080"
-    volumes:
-      - /opt/trusttunnel-client:/trusttunnel:rw
+EOF
 ```
 
 ---
 
-## Клиент в режиме полноценного TUN VPN
+Далее для установки клиента TrustTunnel переходим в Portainer:
 
-`/opt/trusttunnel-client/client.toml`
+1. Раздел "**Stacks**"
+2. Кнопка "**+ Add stack**"
+3. Задаём имя - Name: `tt-client`
+4. В окном Web editor вставляем:
 
-```toml
+```yml
+services:
+  tt-client-socks:
+    image: ghcr.io/octohare/ttunnel-srvcli:latest
+    container_name: tt-client
+    restart: unless-stopped
+    network_mode: host
+
+    environment:
+      - TT_MODE=client
+
+    volumes:
+      - /opt/trusttunnel-client:/trusttunnel_client:rw
+```
+
+---
+
+### Клиент в режиме TUN VPN
+
+Создаём файл `client.toml`, который содержит настройки для подключения к серверу:
+
+```bash
+cat << 'EOF' > /opt/trusttunnel-client/client.toml
 loglevel = "info"
 vpn_mode = "general"
 
@@ -231,21 +255,35 @@ skip_verification = true
 included_routes = ["0.0.0.0/0", "2000::/3"]
 excluded_routes = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
 mtu_size = 1350
+EOF
 ```
 
-Portainer Stack:
+---
+
+Далее для установки клиента TrustTunnel переходим в Portainer:
+
+1. Раздел "**Stacks**"
+2. Кнопка "**+ Add stack**"
+3. Задаём имя - Name: `tt-client`
+4. В окном Web editor вставляем:
 
 ```yml
-trusttunnel-client-vpn:
-    image: ghcr.io/octohare/trusttunnel:latest
-    container_name: trusttunnel-client
+services:
+  tt-client-tun:
+    image: ghcr.io/octohare/ttunnel-srvcli:latest
+    container_name: tt-client
     restart: unless-stopped
+    network_mode: host
+
     environment:
       - TT_MODE=client
+
     cap_add:
       - NET_ADMIN
+
     devices:
       - /dev/net/tun:/dev/net/tun
+
     volumes:
-      - /opt/trusttunnel-client:/trusttunnel:rw
+      - /opt/trusttunnel-client:/trusttunnel_client:rw
 ```
