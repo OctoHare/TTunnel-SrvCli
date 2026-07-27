@@ -209,7 +209,7 @@ included_routes = []
 
 # Включаем SOCKS5 прокси для сети
 [listener.socks]
-address = "0.0.0.0:1080"
+address = "127.0.0.1:1080"
 EOF
 ```
 
