@@ -164,6 +164,12 @@ services:
       - /opt/trusttunnel/server-config:/trusttunnel:rw
       - /etc/caddy/data:/etc/caddy/data:ro
 
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "2"
+
     healthcheck:
       test: ["CMD-SHELL", "ss -ltn | grep -q ':8443 '"]
       interval: 30s
@@ -236,6 +242,12 @@ services:
     volumes:
       - /opt/trusttunnel-client:/trusttunnel:rw
 
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "2"
+
     healthcheck:
       test: ["CMD-SHELL", "ss -ltn | grep -q ':1080 '"]
       interval: 30s
@@ -302,6 +314,12 @@ services:
 
     volumes:
       - /opt/trusttunnel-client:/trusttunnel:rw
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "2"
 
     healthcheck:
       test: ["CMD-SHELL", "ip link | grep -q 'tun'"]
