@@ -1,3 +1,13 @@
+<div align="center">
+  <a href="https://github.com/TrustTunnel/TrustTunnel">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://cdn.adguardcdn.com/website/github.com/TrustTunnel/logo_dark.svg">
+      <source media="(prefers-color-scheme: light)" srcset="https://cdn.adguardcdn.com/website/github.com/TrustTunnel/logo_light.svg">
+      <img src="https://cdn.adguardcdn.com/website/github.com/TrustTunnel/logo_light.svg" alt="TrustTunnel" style="width:100%; max-width:100%; height:auto;">
+    </picture>
+  </a>
+</div>
+
 # TrustTunnel сервер и клиент в контейнере
 
 [English version](README_EN.md)
