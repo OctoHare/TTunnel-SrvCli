@@ -1,8 +1,11 @@
 name: Build and Push Docker Image to GHCR
 
 on:
+  schedule:
+    - cron: '0 0 1 * *'
   push:
-    branches: [ "master", "main" ]
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -20,7 +23,6 @@ jobs:
         run: |
           echo "REPO_LOWER=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
-      # 1. Добавляем QEMU для эмуляции ARM64 во время сборки
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -40,7 +42,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          # 2. Указываем мультиплатформенность
+
           platforms: linux/amd64,linux/arm64
           tags: ghcr.io/${{ env.REPO_LOWER }}:latest
           cache-from: type=gha
