@@ -214,23 +214,14 @@
 
 ---
 
-## Клиент TrustTunnel
+## Установка в режиме VPN клиента TrustTunnel
 
 Клиент можно настроить в двух режимах: **SOCKS5-прокси** или **TUN VPN**.
-
-> [!IMPORTANT]
-> **Требования к окружению**
-> 
-> Данная инструкция предполагает развертывание сервиса с помощью **Stack** в графической панели **Portainer**.  
-> Для выполнения описанных шагов на сервере должны быть заранее установлены **Docker** и **Portainer**.
-
-### Общая подготовка
 
 Создаём каталог для конфигурации клиента:
 ```bash
 mkdir -p /opt/trusttunnel-client
 ```
-
 ---
 
 ### Клиент в режиме SOCKS5-прокси
@@ -290,16 +281,16 @@ mkdir -p /opt/trusttunnel-client
            retries: 3
            start_period: 10s
      ```
-   - Нажимаем **"Deploy the stack"**.
+   - Нажимаем **"Deploy the stack"**.<br><br>
 
-   > [!WARNING]
-   > В секции `healthcheck` замените порт `1080` на тот, который вы указали в `client.toml`.
+   > ⚠️ В секции `healthcheck` замените порт `1080` на тот, который вы указали в `client.toml`.
 
 ---
 
 ### Клиент в режиме TUN VPN
 
 1. Создаём файл `client.toml` с настройками TUN-интерфейса.
+   
    ```bash
    cat << 'EOF' > /opt/trusttunnel-client/client.toml
    loglevel = "info"
@@ -362,4 +353,5 @@ mkdir -p /opt/trusttunnel-client
            retries: 3
            start_period: 10s
      ```
+     
    - Нажимаем **"Deploy the stack"**.
