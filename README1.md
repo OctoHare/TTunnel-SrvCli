@@ -106,20 +106,18 @@
    EOF
    ```
 
-   > [!NOTE]
-   > С такими настройками сервер отправляет весь входящий трафик напрямую в интернет.
-   > 
-   > Если необходимо перенаправлять трафик через SOCKS5-прокси, замените в файле `/opt/trusttunnel/server-config/vpn.toml` секцию:
-   > ```toml
-   > [forward_protocol]
-   > direct = {}
-   > ```
-   > на секцию:
-   > ```toml
-   > [forward_protocol.socks5]
-   > address = "127.0.0.1:1080"
-   > ```
-   > Порт для приёма трафика выберите любой свободный.
+	С такими настройками сервер отправляет весь входящий трафик напрямую в интернет. Если необходимо перенаправлять трафик через SOCKS5-прокси, замените в файле `/opt/trusttunnel/server-config/vpn.toml` секцию:
+	   
+	```toml
+	[forward_protocol]
+	direct = {}
+	```
+	на секцию:
+	```toml
+	[forward_protocol.socks5]
+	address = "127.0.0.1:1080"
+	```
+	> Порт для приёма трафика выберите любой свободный.
 
 <br>
 
@@ -133,9 +131,8 @@
    private_key_path = "/etc/caddy/data/caddy/certificates/acme-v02.api.letsencrypt.org-directory/tt_server_url/tt_server_url.key"
    EOF
    ```
-
-   > [!IMPORTANT]
-   > Для корректного доступа к сертификатам Stack Caddy в Portainer должен отдавать каталог с сертификатами. Убедитесь, что в его конфигурации присутствует volume:
+ 
+   > ⚠️ Для корректного доступа к сертификатам в **Portainer** **Stack** отвечающий за **Caddy** должен отдавать каталог с сертификатами. Убедитесь, что в его конфигурации присутствует volume:
    > ```yml
    > volumes:
    >   - /etc/caddy/data:/data
@@ -171,6 +168,7 @@
 <br>
 
 5. Создаём файл `rules.toml`, отвечающий за [права доступа](https://github.com/TrustTunnel/TrustTunnel/blob/master/CONFIGURATION.md#rules-file-rulestoml). Пока он пустой — всем пользователям разрешено подключение.
+
    ```bash
    touch /opt/trusttunnel/server-config/rules.toml
    ```
@@ -210,10 +208,9 @@
            retries: 3
            start_period: 15s
      ```
-   - Нажимаем **"Deploy the stack"**.
+   - Нажимаем **"Deploy the stack"**.<br><br>
 
-   > [!WARNING]
-   > В секции `healthcheck` обязательно замените порт `8443` на тот, который вы указали в `vpn.toml` в параметре `listen_address`.
+   > ⚠️ В секции `healthcheck` обязательно замените порт `8443` на тот, который вы указали в `vpn.toml` в параметре `listen_address`.
 
 ---
 
