@@ -30,10 +30,15 @@
 ## 📌 Описание
 
 Образ `ghcr.io/octohare/ttunnel-srvcli:latest` собран из официальных репозиториев [`github.com/TrustTunnel`](https://github.com/TrustTunnel):
-* **[`TrustTunnel/TrustTunnel`](https://github.com/TrustTunnel/TrustTunnel)**
-* **[`TrustTunnel/TrustTunnelClient`](https://github.com/TrustTunnel/TrustTunnelClient)**
+* **[`TrustTunnel/TrustTunnel`](https://github.com/TrustTunnel/TrustTunnel)** — серверная часть
+* **[`TrustTunnel/TrustTunnelClient`](https://github.com/TrustTunnel/TrustTunnelClient)** — клиентская часть
 
 ## ❔ Зачем это нужно?
+
+Универсальный Docker-образ «2-в-1» объединяет функционал сервера и клиента TrustTunnel. Это избавляет от необходимости использовать разные образы и упрощает управление инфраструктурой:
+* Вы можете поднять как серверную, так и клиентскую часть туннеля из одного и того же образа, просто изменив параметры **Stack** в **Portainer**.
+* Больше не нужно плодить разные Docker-образы. Запускайте столько изолированных серверов и клиентов TrustTunnel на одном сервере, сколько требуется, используя единый базовый образ.
+* Однообразное обновление и единый источник образов упрощают автоматическое поддержание туннелей в актуальном состоянии.
 
 ## 📄 Пример использование
 
